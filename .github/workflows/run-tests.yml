@@ -45,8 +45,11 @@ jobs:
 
       - name: Write Secret Test Invoices
         run: |
-          mkdir -p tests/fixtures/private/
-          echo $ENEL_INVOICE >> tests/fixtures/private/IT12345678910_0Efs6.xml.p7m
+          if [ -n "$ENEL_INVOICE" ]; then
+            mkdir -p tests/fixtures/private/
+            printf '%s' "$ENEL_INVOICE" | base64 --decode > tests/fixtures/private/IT12345678910_0Efs6.xml.p7m 2>/dev/null || \
+              printf '%s' "$ENEL_INVOICE" > tests/fixtures/private/IT12345678910_0Efs6.xml.p7m
+          fi
         shell: bash
         env:
           ENEL_INVOICE : ${{secrets.ENEL_INVOICE}}
