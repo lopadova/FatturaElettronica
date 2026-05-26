@@ -22,6 +22,10 @@ trait XmlUtilities
     {
         $value = $xml->xpath($xPath);
 
+        if ($value === false) {
+            return null;
+        }
+
         if (empty($value)) {
             return null;
         }
